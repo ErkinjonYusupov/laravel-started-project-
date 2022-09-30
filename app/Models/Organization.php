@@ -10,5 +10,7 @@ class Organization extends Model
     use HasFactory;
     protected $fillable = [
         'title',
+        'parent_id'
     ];
+
 }
