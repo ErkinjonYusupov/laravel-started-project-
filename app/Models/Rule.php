@@ -5,16 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Organization extends Model
+class Rule extends Model
 {
     use HasFactory;
     protected $fillable = [
         'title',
-        'parent_id'
+        'code',
     ];
-
-    public function parent()
-    {
-        return $this->hasOne(Organization::class, 'id', 'parent_id');
-    }
 }

@@ -39,7 +39,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = User::create([
+            User::create([
                 'full_name' => $request->full_name,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
@@ -49,7 +49,6 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
-                // 'token' => $user->createToken("erick")->plainTextToken
             ], 200);
 
         } catch (\Throwable $th) {
