@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserRuleResource;
+use App\Models\UserRule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-
+    private User $user;
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
     /**
      * Create User
      * @param Request $request
@@ -39,7 +46,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            User::create([
+            $this->user::create([
                 'full_name' => $request->full_name,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
@@ -91,7 +98,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = User::where('username', $request->username)->first();
+            $user = $this->user::where('username', $request->username)->first();
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
@@ -106,11 +113,9 @@ class AuthController extends Controller
         }
     }
     public function authUser(){
-            $user = User::with(['organization:id,title'])
-                ->find(auth()->id());
-            return response()->json([
-                'status' => true,
-                'user'=>$user
-            ], 200);
+        return UserRuleResource::collection($this->user::with(['user_rules.rule',
+        'organization:id,title'])
+        ->where('id', auth()->id())
+        ->get());
     }
 }

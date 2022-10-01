@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(
     function () {
         Route::post('auth/register', [AuthController::class, 'createUser']);
-        Route::post('auth/user', [AuthController::class, 'authUser']);
+        Route::get('auth/user', [AuthController::class, 'authUser']);
         Route::resource('organizations', OrganizationController::class);
     }
 );

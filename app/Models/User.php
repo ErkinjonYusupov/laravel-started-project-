@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class, 'organization_id', 'id');
     }
+
+    public function user_rules()
+    {
+        return $this->hasMany(UserRule::class, 'user_id', 'id');
+    }
 }

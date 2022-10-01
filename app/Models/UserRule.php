@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class UserRule extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'rule_id',
+    ];
+    public function rule()
+    {
+        return $this->belongsTo(Rule::class, 'rule_id', 'id');
+    }
 }

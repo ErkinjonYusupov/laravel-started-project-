@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('user_rules', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->bigInteger('rule_id');
+            $table->foreignId('rule_id')->constrained();
         });
     }
 
