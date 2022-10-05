@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->unique();
             $table->bigInteger('parent_id')->nullable()->default();
             $table->timestamps();
+            $table->boolean('active')->default(true);
         });
     }
 

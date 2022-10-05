@@ -16,7 +16,7 @@ class UserRuleResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user' => $this->full_name,
+            'full_name' => $this->full_name,
             'organization' => $this->organization,
             'active' => $this->active,
             'rules' => $this->rules()

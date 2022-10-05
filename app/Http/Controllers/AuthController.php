@@ -5,9 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\UserRuleResource;
-use App\Models\UserRule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -113,9 +111,10 @@ class AuthController extends Controller
         }
     }
     public function authUser(){
-        return UserRuleResource::collection($this->user::with(['user_rules.rule',
+        return new UserRuleResource($this->user::with(['user_rules.rule',
         'organization:id,title'])
         ->where('id', auth()->id())
-        ->get());
+        ->first());
+
     }
 }

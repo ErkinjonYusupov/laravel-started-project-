@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OrganizationController extends Controller
@@ -20,7 +21,11 @@ class OrganizationController extends Controller
 
     public function index()
     {
-        return OrganizationResource::collection($this->organization::with(['parent'])->paginate(10));
+        $search = request('search');
+        return OrganizationResource::collection(
+            $this->organization::with(['parent'])
+            ->where('title', 'LIKE', "%$search%")
+            ->paginate(10));
     }
 
 
@@ -64,7 +69,7 @@ class OrganizationController extends Controller
 
     public function update(Request $request, Organization $organization)
     {
-        //Validated
+       //Validated
         $validateUser = Validator::make($request->all(),
         [
             'title' => 'required',
@@ -93,9 +98,47 @@ class OrganizationController extends Controller
         }
     }
 
+    public function parents(){
+        return $this->organization::with(['parent'])->where('id', '!=', request('id'))->get();
+    }
 
-    public function destroy($id)
+    public function setActive($id){
+        $row=$this->organization::find($id);
+        $row->active = !$row->active;
+        $row->save();
+        return response()->json(['message' => $row->active ? "Faollashtirildi" : "Nofaollashtirildi"],200);
+    }
+
+    public function getActiveOrganizations(){
+        $auth = Auth::user();
+        $organization = $this->organization::with(['children'])
+        ->where('active', true)
+        ->where('id', $auth->organization_id)
+        ->first();
+        $organizations[] = [
+            'id' => $organization->id,
+            'title' => $organization->title,
+        ];
+        return  $organizations = $this->recOrganization($organizations, $organization->children, '-');
+    }
+
+    public function recOrganization($organizations, $children, $line)
     {
-        //
+        foreach($children as $child){
+            $organizations[] = [
+                'id' => $child['id'],
+                'title' => $line . $child['title'],
+            ];
+            if($this->checkChild($child->children)){
+                $line = "-$line";
+                $organizations = $this->recOrganization($organizations, $child['children'], $line);
+            }
+        }
+        return $organizations;
+    }
+
+    public function checkChild($children)
+    {
+        return count($children ?? []) > 0 ? true : false;
     }
 }

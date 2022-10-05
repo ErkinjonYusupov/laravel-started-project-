@@ -19,7 +19,8 @@ class OrganizationSeeder extends Seeder
         $data = array(
             [
                 'title' => 'Bosh ofes',
-
+                'parent_id'=>null,
+                'active'=>true
             ],
         );
         DB::table('organizations')->insert($data);

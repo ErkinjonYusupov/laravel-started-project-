@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,11 @@ Route::middleware('auth:sanctum')->group(
     function () {
         Route::post('auth/register', [AuthController::class, 'createUser']);
         Route::get('auth/user', [AuthController::class, 'authUser']);
+        Route::get('organizations/parents', [OrganizationController::class, 'parents']);
+        Route::get('organizations/get_active', [OrganizationController::class, 'getActiveOrganizations']);
+        Route::put('organizations/set_active/{id}', [OrganizationController::class, 'setActive']);
         Route::resource('organizations', OrganizationController::class);
+        Route::resource('/users', UserController::class);
     }
 );
 

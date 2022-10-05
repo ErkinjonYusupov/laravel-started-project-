@@ -17,4 +17,9 @@ class Organization extends Model
     {
         return $this->hasOne(Organization::class, 'id', 'parent_id');
     }
+
+    public function children()
+    {
+        return $this->hasMany(Organization::class, 'parent_id', 'id')->with(['children']);
+    }
 }
