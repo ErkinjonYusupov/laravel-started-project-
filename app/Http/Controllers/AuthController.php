@@ -25,12 +25,12 @@ class AuthController extends Controller
     public function createUser(Request $request)
     {
 
-        // return Auth::user();
         try {
             //Validated
             $validateUser = Validator::make($request->all(),
             [
                 'full_name' => 'required',
+                'phone' => 'required',
                 'username' => 'required|unique:users',
                 'password' => 'required',
                 'organization_id' => 'required',
@@ -46,6 +46,7 @@ class AuthController extends Controller
 
             $this->user::create([
                 'full_name' => $request->full_name,
+                'phone' => $request->phone,
                 'username' => $request->username,
                 'password' => Hash::make($request->password),
                 'organization_id' => $request->organization_id,
@@ -59,8 +60,8 @@ class AuthController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => "auth qilinmagan"
-                // 'message' => $th->getMessage()
+                'message' => $th->getMessage()
+
             ], 500);
         }
     }

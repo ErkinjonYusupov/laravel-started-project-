@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRulesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,10 @@ Route::middleware('auth:sanctum')->group(
         Route::get('organizations/get_active', [OrganizationController::class, 'getActiveOrganizations']);
         Route::put('organizations/set_active/{id}', [OrganizationController::class, 'setActive']);
         Route::resource('organizations', OrganizationController::class);
-        Route::resource('/users', UserController::class);
+        Route::get('rules/have', [UserRulesController::class, 'roles']);
+        Route::get('rules/no', [UserRulesController::class, 'no_roles']);
+        Route::resource('rules', UserRulesController::class);
+        Route::resource('users', UserController::class);
     }
 );
 

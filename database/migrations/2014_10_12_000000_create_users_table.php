@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('organization_id')->constrained();
             $table->string('password');
             $table->boolean('active')->default(true);
+            $table->boolean('developer')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

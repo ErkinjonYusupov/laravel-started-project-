@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
                 'password' => Hash::make('pass'),
                 'organization_id'=> 1,
                 'active' => true,
+                'developer' => true,
             ],
         );
         DB::table('users')->insert($data);

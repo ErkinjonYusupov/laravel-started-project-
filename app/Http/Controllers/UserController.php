@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -53,9 +56,47 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        try {
+            $validator = Validator::make($request->all(),
+            [
+                'username' => ['required', Rule::unique('users')->where(
+                    function ($q) use ($user) {
+                        $q->where('username', $user->username)
+                            ->where('id', '!=', $user->id);
+                    }
+                )],
+                'full_name' => 'required',
+                'phone' => 'required',
+                'password' => 'required',
+                'organization_id' => 'required',
+            ],[
+                'username.unique' => 'Login qiyinroq bo\'lishi kerak'
+            ]);
+
+            if ($validator->fails())
+                return response()->json(['message' => $validator->getMessageBag()], 400);
+            $user->update([
+                'full_name' => $request->full_name,
+                'phone' => $request->phone,
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'organization_id' => $request->organization_id,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User Created Successfully',
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+
+            ], 500);
+        }
     }
 
     /**
