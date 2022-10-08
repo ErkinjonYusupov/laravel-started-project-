@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'phone' => '+998903666088',
                 'password' => Hash::make('pass'),
                 'organization_id'=> 1,
+                'position_id'=> null,
                 'active' => true,
                 'developer' => true,
             ],

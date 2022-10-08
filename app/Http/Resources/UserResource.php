@@ -21,7 +21,9 @@ class UserResource extends JsonResource
             'username' => $this->username,
             'active' => $this->active,
             'organization_id'=>$this->organization_id,
+            'position_id'=>$this->position_id,
             'organization' => $this->organization?->title,
+            'position' => $this->position?->title,
         ];
     }
 }

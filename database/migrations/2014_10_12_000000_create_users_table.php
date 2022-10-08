@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('username')->unique();
             $table->foreignId('organization_id')->constrained();
+            $table->foreignId('position_id')->nullable()->constrained();
             $table->string('password');
             $table->boolean('active')->default(true);
             $table->boolean('developer')->default(false);

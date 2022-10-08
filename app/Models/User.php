@@ -22,6 +22,7 @@ class User extends Authenticatable
         'username',
         'password',
         'organization_id',
+        'position_id',
         'phone',
         'active',
     ];
@@ -47,6 +48,10 @@ class User extends Authenticatable
     public function organization()
     {
         return $this->belongsTo(Organization::class, 'organization_id', 'id');
+    }
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id', 'id');
     }
 
     public function user_rules()

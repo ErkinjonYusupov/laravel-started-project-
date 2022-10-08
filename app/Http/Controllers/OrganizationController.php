@@ -119,10 +119,10 @@ class OrganizationController extends Controller
             'id' => $organization->id,
             'title' => $organization->title,
         ];
-        return  $organizations = $this->recOrganization($organizations, $organization->children, '-');
+        return  $organizations = $this->recOrganizations($organizations, $organization->children, '-');
     }
 
-    public function recOrganization($organizations, $children, $line)
+    public function recOrganizations($organizations, $children, $line)
     {
         foreach($children as $child){
             $organizations[] = [
