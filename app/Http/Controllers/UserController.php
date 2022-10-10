@@ -95,4 +95,10 @@ class UserController extends Controller
     {
         //
     }
+    public function setActive($id){
+        $row=$this->user::find($id);
+        $row->active = !$row->active;
+        $row->save();
+        return response()->json(['message' => $row->active ? "Faollashtirildi" : "Nofaollashtirildi"],200);
+    }
 }

@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(
         Route::post('rules/remove', [UserRulesController::class, 'remove']);
         Route::resource('rules', UserRulesController::class);
         //userlar
+        Route::put('users/set_active/{id}', [UserController::class, 'setActive']);
         Route::resource('users', UserController::class);
     }
 );
